@@ -1,0 +1,25 @@
+/* src/styles.css or any relevant CSS file */
+.date-picker-container {
+    margin-bottom: 20px;
+}
+
+.date-picker-container label {
+    margin-right: 10px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Add space between items */
+    width: 90vw; /* Set a width for the container */
+    margin: auto; /* Center the container */
+}
+
+.chart {
+    width: calc(50% - 10px); /* Each box takes 50% of the container's width minus half the gap */
+    box-sizing: border-box; /* Include padding/border in the element's total width */
+    padding: 20px;
+    border: 1px solid #000; /* Add a border for visibility */
+    text-align: center; /* Center text inside boxes */
+    margin-bottom: 20px; /* Add space between rows */
+}
