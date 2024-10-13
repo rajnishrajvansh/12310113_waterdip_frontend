@@ -30,7 +30,7 @@ const Dashboard = () => {
   const [totalAdults, setTotalAdults] = useState<number>(0);
   const [totalChildren, setTotalChildren] = useState<number>(0);
   const [totalBabies, setTotalBabies] = useState<number>(0);
-
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); 
   // Date state
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -55,6 +55,10 @@ const Dashboard = () => {
         console.error("Error fetching data:", error); // Log any errors
       });
   }, []);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
 
   const processBookingData = (data: BookingData[]) => {
     const visitorsPerDay: VisitorsData[] = [];
@@ -110,6 +114,7 @@ const Dashboard = () => {
   };
 
   
+  
   const filteredVisitorsPerDay = visitorsPerDay.filter((visitor) => {
     const visitorDate = new Date(visitor.date);
     return (
@@ -120,7 +125,19 @@ const Dashboard = () => {
 
   return (
     <div>
-     
+      <div className={isDarkMode ? 'dark-mode' : ''}> {/* Apply dark mode class */}
+      <div className="date-picker-container">
+        <label>
+          <input
+            type="checkbox"
+            checked={isDarkMode}
+            onChange={toggleDarkMode} // Toggle dark mode
+          />
+          Dark Mode
+        </label>
+      </div>
+      </div>
+
       <div className="date-picker-container">
         <label>Start Date:</label>
         <DatePicker

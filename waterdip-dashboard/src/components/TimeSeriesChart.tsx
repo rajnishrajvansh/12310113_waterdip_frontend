@@ -1,4 +1,4 @@
-// src/components/TimeSeriesChart.tsx
+
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
