@@ -1,22 +1,7 @@
-:root {
-    --background-color: #ffffff; /* Light mode background */
-    --text-color: #000000; /* Light mode text color */
-    --border-color: #000000; /* Light mode border color */
+/* src/styles.css or any relevant CSS file */
+*{
+    background-color: #fff;
 }
-
-.dark-mode {
-    --background-color: #1a1a1a; /* Dark mode background */
-    --text-color: #ffffff; /* Dark mode text color */
-    --border-color: #ffffff; /* Dark mode border color */
-}
-
-body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
-}
-
-
 
 .date-picker-container {
     margin-bottom: 20px;

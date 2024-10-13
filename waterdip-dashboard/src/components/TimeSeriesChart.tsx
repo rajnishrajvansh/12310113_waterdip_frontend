@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
@@ -12,7 +11,7 @@ const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
     chart: {
       type: 'area',
       stacked: false,
-      height: 350,
+      height: 350, // You might want to check the container height too
       zoom: {
         type: 'x',
         enabled: true,
@@ -32,33 +31,22 @@ const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
       text: 'Time Series: Number of Visitors per Day',
       align: 'left'
     },
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        inverseColors: false,
-        opacityFrom: 0.5,
-        opacityTo: 0,
-        stops: [0, 90, 100]
-      },
-    },
+   
     yaxis: {
       title: {
         text: 'Visitors'
-      },
+      }
     },
-    
     xaxis: {
       type: 'datetime',
-      categories: data.map(item => item.date),
+      categories: data.map(item => new Date(item.date).toISOString()) // Ensure the dates are ISO strings
     }
   };
 
- 
   const series = [
     {
       name: 'Visitors',
-      data: data.map(item => (item.adults + item.children + item.babies)),
+      data: data.map(item => (Number(item.adults) + Number(item.children) + Number(item.babies))) // Ensure values are numeric
     }
   ];
 

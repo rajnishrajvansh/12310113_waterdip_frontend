@@ -1,4 +1,3 @@
-// src/pages/Dashboard.tsx
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../utils/fetchdata";
 import { BookingData } from "../types/BookingData";
@@ -9,12 +8,14 @@ import ChildrenVisitorsSparkline from "../components/ChildrenVisitorsSparkline";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; 
 import "../styles/Dashboard.css";
+
 interface VisitorsData {
   date: string;
   visitors: number;
   adults: number;
   children: number;
   babies: number;
+  country: string; // Add country to VisitorsData to simplify filtering
 }
 
 interface CountryVisitorsData {
@@ -24,27 +25,19 @@ interface CountryVisitorsData {
 
 const Dashboard = () => {
   const [visitorsPerDay, setVisitorsPerDay] = useState<VisitorsData[]>([]);
-  const [visitorsByCountry, setVisitorsByCountry] = useState<
-    CountryVisitorsData[]
-  >([]);
+  const [visitorsByCountry, setVisitorsByCountry] = useState<CountryVisitorsData[]>([]);
   const [totalAdults, setTotalAdults] = useState<number>(0);
   const [totalChildren, setTotalChildren] = useState<number>(0);
   const [totalBabies, setTotalBabies] = useState<number>(0);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); 
-  // Date state
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   useEffect(() => {
     fetchData()
       .then((data) => {
-     
         console.log("Fetched Data:", data);
-
-       
         const processedData = processBookingData(data);
-
-       
         setVisitorsPerDay(processedData.visitorsPerDay);
         setVisitorsByCountry(processedData.visitorsByCountry);
         setTotalAdults(processedData.totalAdults);
@@ -52,7 +45,7 @@ const Dashboard = () => {
         setTotalBabies(processedData.totalBabies);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error); // Log any errors
+        console.error("Error fetching data:", error);
       });
   }, []);
 
@@ -68,12 +61,10 @@ const Dashboard = () => {
     let totalBabies = 0;
 
     data.forEach((booking) => {
-     
       const date = new Date(
         `${booking.arrival_date_year}-${booking.arrival_date_month}-${booking.arrival_date_day_of_month}`
       );
 
-    
       const totalVisitors = booking.adults + booking.children + booking.babies;
 
       visitorsPerDay.push({
@@ -82,9 +73,9 @@ const Dashboard = () => {
         adults: booking.adults,
         children: booking.children,
         babies: booking.babies,
+        country: booking.country, // Store country for filtering
       });
 
-     
       if (visitorsByCountry[booking.country]) {
         visitorsByCountry[booking.country] += totalVisitors;
       } else {
@@ -96,7 +87,6 @@ const Dashboard = () => {
       totalBabies += booking.babies;
     });
 
-   
     const visitorsByCountryArray = Object.keys(visitorsByCountry).map(
       (country) => ({
         country,
@@ -113,8 +103,6 @@ const Dashboard = () => {
     };
   };
 
-  
-  
   const filteredVisitorsPerDay = visitorsPerDay.filter((visitor) => {
     const visitorDate = new Date(visitor.date);
     return (
@@ -123,28 +111,35 @@ const Dashboard = () => {
     );
   });
 
+  // Aggregate visitors per country within the filtered date range
+  const filteredVisitorsByCountry = filteredVisitorsPerDay.reduce(
+    (acc: { [key: string]: number }, visitor) => {
+      if (acc[visitor.country]) {
+        acc[visitor.country] += visitor.visitors;
+      } else {
+        acc[visitor.country] = visitor.visitors;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  const filteredVisitorsByCountryArray = Object.keys(filteredVisitorsByCountry).map(
+    (country) => ({
+      country,
+      visitors: filteredVisitorsByCountry[country],
+    })
+  );
+
   return (
     <div>
-      <div className={isDarkMode ? 'dark-mode' : ''}> {/* Apply dark mode class */}
-      <div className="date-picker-container">
-        <label>
-          <input
-            type="checkbox"
-            checked={isDarkMode}
-            onChange={toggleDarkMode} // Toggle dark mode
-          />
-          Dark Mode
-        </label>
-      </div>
-      </div>
-
       <div className="date-picker-container">
         <label>Start Date:</label>
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}
         />
-        <label>End Date:</label>
+        <label> End Date:</label>
         <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
       </div>
 
@@ -154,9 +149,9 @@ const Dashboard = () => {
           <TimeSeriesChart data={filteredVisitorsPerDay} />
         </div>
 
-        <div className="chart"> 
+        <div className="chart">
           <h2>Country Visitors Chart</h2>
-          <CountryVisitorsChart data={visitorsByCountry} />
+          <CountryVisitorsChart data={filteredVisitorsByCountryArray} /> {/* Use filtered country data */}
         </div>
 
         <div className="chart">

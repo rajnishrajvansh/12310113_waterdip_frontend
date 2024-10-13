@@ -60,9 +60,6 @@ const CountryVisitorsChart = ({ data }: CountryVisitorsChartProps) => {
         },
         labels: {
           show: false,
-          formatter: function (val) {
-            return val + "%";
-          }
         }
       
       },
