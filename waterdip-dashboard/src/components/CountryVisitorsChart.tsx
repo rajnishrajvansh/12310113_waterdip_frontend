@@ -12,7 +12,7 @@ const CountryVisitorsChart = ({ data }: CountryVisitorsChartProps) => {
     chart: { type: 'bar', height: 350, },
     plotOptions: {
       bar: {
-        borderRadius: 10,
+        borderRadius: 5,
         dataLabels: {
           position: 'top', // top, center, bottom
         },
@@ -52,14 +52,17 @@ const CountryVisitorsChart = ({ data }: CountryVisitorsChartProps) => {
       }
       },
       yaxis: {
+        title: {
+          text: 'Visitors'
+        },
         axisBorder: {
-          show: false
+          show: true
         },
         axisTicks: {
-          show: false,
+          show: true,
         },
         labels: {
-          show: false,
+          show: true,
         }
       
       },

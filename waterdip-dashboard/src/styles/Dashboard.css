@@ -1,5 +1,4 @@
-/* src/styles.css or any relevant CSS file */
-*{
+* {
     background-color: #fff;
 }
 
@@ -14,16 +13,28 @@
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Add space between items */
-    width: 90vw; /* Set a width for the container */
-    margin: auto; /* Center the container */
+    justify-content: space-between; 
+    width: 90vw; 
+    margin: auto;
 }
 
 .chart {
-    width: calc(50% - 10px); /* Each box takes 50% of the container's width minus half the gap */
-    box-sizing: border-box; /* Include padding/border in the element's total width */
+    width: calc(50% - 10px);
+    box-sizing: border-box; 
     padding: 20px;
-    border: 1px solid #000; /* Add a border for visibility */
-    text-align: center; /* Center text inside boxes */
-    margin-bottom: 20px; /* Add space between rows */
+    border: 1px solid #000; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+@media (max-width: 768px) {
+    .chart {
+        width: 100%; 
+        margin-bottom: 20px; 
+    }
+
+    .container {
+        justify-content: center;
+    }
 }

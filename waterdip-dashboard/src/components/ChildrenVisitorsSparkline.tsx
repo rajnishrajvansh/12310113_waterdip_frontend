@@ -19,14 +19,30 @@ const ChildrenVisitorsSparkline = ({ data, totalChildren }: SparklineChartProps)
       type: 'line',
       sparkline: { enabled: true },
     },
+    markers: {
+      size: 0
+    },
     stroke: {
       curve: 'smooth',
     },
     fill: {
       opacity: 0.3,
     },
-    yaxis: {
+    yaxis:
+     {
       min: 0,
+      title: {
+        text: 'Visitors'
+      },
+      axisBorder: {
+        show: true
+      },
+      axisTicks: {
+        show: true,
+      },
+      labels: {
+        show: true,
+      }
     },
     colors: ['#DCE6EC'],
     xaxis: {

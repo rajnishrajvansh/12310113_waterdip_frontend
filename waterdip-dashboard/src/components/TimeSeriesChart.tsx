@@ -50,7 +50,7 @@ const TimeSeriesChart = ({ data }: TimeSeriesChartProps) => {
     }
   ];
 
-  return <Chart options={options} series={series} type="area" />;
+  return <Chart options={options} series={series} type="line" />;
 };
 
 export default TimeSeriesChart;

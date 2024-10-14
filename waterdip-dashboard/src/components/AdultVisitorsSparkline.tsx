@@ -16,7 +16,7 @@ const AdultVisitorsSparkline = ({ data, totalAdults }: SparklineChartProps) => {
   const options: ApexOptions = {
     chart: {
       type: 'area',
-      height: 160,
+      height: 350,
       sparkline: { enabled: true },
     },
     stroke: {
@@ -27,6 +27,15 @@ const AdultVisitorsSparkline = ({ data, totalAdults }: SparklineChartProps) => {
     },
     yaxis: {
       min: 0,
+      axisBorder: {
+        show: true
+      },
+      axisTicks: {
+        show: true,
+      },
+      labels: {
+        show: true,
+      }
     },
     colors: ['#DCE6EC'],
     title: {
