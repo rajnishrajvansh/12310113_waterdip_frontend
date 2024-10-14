@@ -15,7 +15,7 @@ interface VisitorsData {
   adults: number;
   children: number;
   babies: number;
-  country: string; // Add country to VisitorsData to simplify filtering
+  country: string;
 }
 
 interface CountryVisitorsData {
@@ -24,14 +24,14 @@ interface CountryVisitorsData {
 }
 
 const Dashboard = () => {
+  // Set the default start date to 07/01/2015
+  const [startDate, setStartDate] = useState<Date | null>(new Date("2015-07-01"));
+  const [endDate, setEndDate] = useState<Date | null>(new Date("2015-08-09"));
   const [visitorsPerDay, setVisitorsPerDay] = useState<VisitorsData[]>([]);
   const [visitorsByCountry, setVisitorsByCountry] = useState<CountryVisitorsData[]>([]);
   const [totalAdults, setTotalAdults] = useState<number>(0);
   const [totalChildren, setTotalChildren] = useState<number>(0);
   const [totalBabies, setTotalBabies] = useState<number>(0);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
 
   useEffect(() => {
     fetchData()
@@ -48,10 +48,6 @@ const Dashboard = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
 
   const processBookingData = (data: BookingData[]) => {
     const visitorsPerDay: VisitorsData[] = [];
@@ -73,7 +69,7 @@ const Dashboard = () => {
         adults: booking.adults,
         children: booking.children,
         babies: booking.babies,
-        country: booking.country, // Store country for filtering
+        country: booking.country,
       });
 
       if (visitorsByCountry[booking.country]) {
@@ -111,7 +107,6 @@ const Dashboard = () => {
     );
   });
 
-  // Aggregate visitors per country within the filtered date range
   const filteredVisitorsByCountry = filteredVisitorsPerDay.reduce(
     (acc: { [key: string]: number }, visitor) => {
       if (acc[visitor.country]) {
@@ -138,9 +133,14 @@ const Dashboard = () => {
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}
+          dateFormat="MM/dd/yyyy"  // Ensure the date format is clear
         />
         <label> End Date:</label>
-        <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+        <DatePicker 
+          selected={endDate} 
+          onChange={(date) => setEndDate(date)} 
+          dateFormat="MM/dd/yyyy"
+        />
       </div>
 
       <div className="container">
@@ -151,7 +151,7 @@ const Dashboard = () => {
 
         <div className="chart">
           <h2>Country Visitors Chart</h2>
-          <CountryVisitorsChart data={filteredVisitorsByCountryArray} /> {/* Use filtered country data */}
+          <CountryVisitorsChart data={filteredVisitorsByCountryArray} />
         </div>
 
         <div className="chart">
@@ -160,7 +160,7 @@ const Dashboard = () => {
             data={filteredVisitorsPerDay.map((item) => ({
               date: item.date,
               adults: item.adults,
-            }))} 
+            }))}
             totalAdults={totalAdults}
           />
         </div>
@@ -170,9 +170,9 @@ const Dashboard = () => {
           <ChildrenVisitorsSparkline
             data={filteredVisitorsPerDay.map((item) => ({
               date: item.date,
-              children: item.children, 
-            }))} 
-            totalChildren={totalChildren} 
+              children: item.children,
+            }))}
+            totalChildren={totalChildren}
           />
         </div>
       </div>

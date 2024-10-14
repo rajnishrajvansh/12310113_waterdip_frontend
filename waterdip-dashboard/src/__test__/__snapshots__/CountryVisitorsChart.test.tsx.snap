@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot for CountryVisitorsChart 1`] = `
+<DocumentFragment>
+  <div
+    height="auto"
+    options="[object Object]"
+    series="[object Object]"
+    type="bar"
+    width="100%"
+  />
+</DocumentFragment>
+`;

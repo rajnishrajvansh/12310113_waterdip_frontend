@@ -44,7 +44,7 @@ const ChildrenVisitorsSparkline = ({ data, totalChildren }: SparklineChartProps)
         show: true,
       }
     },
-    colors: ['#DCE6EC'],
+    colors: ['#000000'],
     xaxis: {
       categories: data.map(item => item.date),
       labels: {

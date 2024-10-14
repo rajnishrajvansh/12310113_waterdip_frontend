@@ -37,7 +37,7 @@ const AdultVisitorsSparkline = ({ data, totalAdults }: SparklineChartProps) => {
         show: true,
       }
     },
-    colors: ['#DCE6EC'],
+    colors: ['#000000'],
     title: {
       text: `${totalAdults}`, 
       offsetX: 0,
