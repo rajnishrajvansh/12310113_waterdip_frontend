@@ -59,10 +59,10 @@ const CountryVisitorsChart = ({ data }: CountryVisitorsChartProps) => {
           show: true
         },
         axisTicks: {
-          show: true,
+          show: false,
         },
         labels: {
-          show: true,
+          show: false,
         }
       
       },

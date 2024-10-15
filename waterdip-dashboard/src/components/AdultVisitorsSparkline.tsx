@@ -1,70 +1,67 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
-import { ApexOptions } from 'apexcharts';
+import React, { useEffect } from 'react';
+import ApexCharts from 'apexcharts';
 
-interface AdultVisitorData {
-  date: string; 
-  adults: number;
+interface AdultVisitorsSparklineProps {
+  data: { date: string; adults: number }[];
 }
 
-interface SparklineChartProps {
-  data: AdultVisitorData[]; 
-  totalAdults: number;
-}
+const AdultVisitorsSparkline: React.FC<AdultVisitorsSparklineProps> = ({ data }) => {
+  useEffect(() => {
+    // Calculate the total adults based on the filtered data
+    const totalAdults = data.reduce((acc, item) => acc + item.adults, 0);
 
-const AdultVisitorsSparkline = ({ data, totalAdults }: SparklineChartProps) => {
-  const options: ApexOptions = {
-    chart: {
-      type: 'area',
-      height: 350,
-      sparkline: { enabled: true },
-    },
-    stroke: {
-      curve: 'smooth', 
-    },
-    fill: {
-      opacity: 0.3,
-    },
-    yaxis: {
-      min: 0,
-      axisBorder: {
-        show: true
-      },
-      axisTicks: {
-        show: true,
-      },
-      labels: {
-        show: true,
-      }
-    },
-    colors: ['#000000'],
-    title: {
-      text: `${totalAdults}`, 
-      offsetX: 0,
-      style: {
-        fontSize: '24px',
-      },
-    },
-    subtitle: {
-      text: 'Total Adult Visitors',
-      offsetX: 0,
-      style: {
-        fontSize: '14px',
-      },
-    },
-    xaxis: {
-      categories: data.map(item => item.date),
-    },
-  };
+    // Map the adults data for the chart
+    const adultsData = data.map((item) => item.adults);
 
-  const series = [
-    {
-      name: 'Adults',
-      data: data.map(item => item.adults), 
-    },
-  ];
+    const options = {
+      series: [{
+        data: adultsData,
+      }],
+      chart: {
+        type: 'area',
+        height: 160,
+        sparkline: {
+          enabled: true,
+        },
+      },
+      stroke: {
+        curve: 'straight',
+      },
+      fill: {
+        opacity: 0.8,
+      },
+      yaxis: {
+        min: 0,
+      },
+      colors: ['#0991e3'],
+      title: {
+        text: `${totalAdults}`, // Dynamically set totalAdults in the title
+        offsetX: 0,
+        style: {
+          fontSize: '24px',
+        },
+        labels: {
+          show: true,
+        }
+      },
+      subtitle: {
+        text: 'Total Adults',
+        offsetX: 0,
+        style: {
+          fontSize: '14px',
+        },
+      },
+    };
 
-  return <Chart options={options} series={series} type='area' />;
+    const chart = new ApexCharts(document.querySelector("#adults-sparkline-chart"), options);
+    chart.render();
+
+    return () => {
+      chart.destroy();
+    };
+  }, [data]); // Recalculate and update the chart whenever `data` changes
+
+  return <div id="adults-sparkline-chart"></div>;
 };
 
 export default AdultVisitorsSparkline;

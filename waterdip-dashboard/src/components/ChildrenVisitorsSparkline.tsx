@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
@@ -10,7 +9,7 @@ interface ChildrenVisitorData {
 
 interface SparklineChartProps {
   data: ChildrenVisitorData[];
-  totalChildren: number; 
+  totalChildren: number;  // Add totalChildren to the props interface
 }
 
 const ChildrenVisitorsSparkline = ({ data, totalChildren }: SparklineChartProps) => {
@@ -26,10 +25,9 @@ const ChildrenVisitorsSparkline = ({ data, totalChildren }: SparklineChartProps)
       curve: 'smooth',
     },
     fill: {
-      opacity: 0.3,
+      opacity: 0.8,
     },
-    yaxis:
-     {
+    yaxis: {
       min: 0,
       title: {
         text: 'Visitors'
@@ -44,7 +42,7 @@ const ChildrenVisitorsSparkline = ({ data, totalChildren }: SparklineChartProps)
         show: true,
       }
     },
-    colors: ['#000000'],
+    colors: ['#0991e3'],
     xaxis: {
       categories: data.map(item => item.date),
       labels: {
@@ -52,7 +50,7 @@ const ChildrenVisitorsSparkline = ({ data, totalChildren }: SparklineChartProps)
       },
     },
     title: {
-      text: `${totalChildren}`, 
+      text: `${totalChildren}`,  // Show total children count
       offsetX: 0,
       style: {
         fontSize: '24px',

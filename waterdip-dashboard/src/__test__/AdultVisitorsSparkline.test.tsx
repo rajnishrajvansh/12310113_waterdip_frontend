@@ -1,23 +1,25 @@
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import AdultVisitorsSparkline from "../components/AdultVisitorsSparkline";
 
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import AdultVisitorsSparkline from '../components/AdultVisitorsSparkline';
+describe("AdultVisitorsSparkline", () => {
+  it("renders the sparkline chart with the correct title", () => {
+    // Mock data for testing
+    const mockData = [
+      { date: "2024-01-01", adults: 5 },
+      { date: "2024-01-02", adults: 10 },
+      { date: "2024-01-03", adults: 7 },
+    ];
 
-test('renders Adult Visitors Sparkline with data', () => {
-  const mockData = [
-    { date: '2024-01-01', adults: 5 },
-    { date: '2024-01-02', adults: 7 },
-    { date: '2024-01-03', adults: 10 },
-  ];
-  const totalAdults = 22; 
+    // Render the component without the totalAdults prop
+    render(<AdultVisitorsSparkline data={mockData} />);
 
-  render(<AdultVisitorsSparkline data={mockData} totalAdults={totalAdults} />);
+    // Check if the title contains the total adults value
+    const titleElement = screen.getByText(/Total Adults/i);
+    expect(titleElement).toBeInTheDocument();
 
-  
-  const titleElement = screen.getByText(/Adult Visitors/i);
-  expect(titleElement).toBeInTheDocument();
-
-
-  const totalAdultsElement = screen.getByText(/22/i);
-  expect(totalAdultsElement).toBeInTheDocument();
+    // Optionally, you can check for the total adults displayed in the title
+    const totalAdults = mockData.reduce((acc, item) => acc + item.adults, 0);
+    expect(screen.getByText(totalAdults.toString())).toBeInTheDocument();
+  });
 });

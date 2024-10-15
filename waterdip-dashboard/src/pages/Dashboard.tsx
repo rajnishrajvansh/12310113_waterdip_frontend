@@ -6,7 +6,7 @@ import CountryVisitorsChart from "../components/CountryVisitorsChart";
 import AdultVisitorsSparkline from "../components/AdultVisitorsSparkline";
 import ChildrenVisitorsSparkline from "../components/ChildrenVisitorsSparkline";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; 
+import "react-datepicker/dist/react-datepicker.css";
 import "../styles/Dashboard.css";
 
 interface VisitorsData {
@@ -24,7 +24,6 @@ interface CountryVisitorsData {
 }
 
 const Dashboard = () => {
-  // Set the default start date to 07/01/2015
   const [startDate, setStartDate] = useState<Date | null>(new Date("2015-07-01"));
   const [endDate, setEndDate] = useState<Date | null>(new Date("2015-08-09"));
   const [visitorsPerDay, setVisitorsPerDay] = useState<VisitorsData[]>([]);
@@ -126,6 +125,12 @@ const Dashboard = () => {
     })
   );
 
+  // Extract childrenData from visitorsPerDay for the children sparkline
+  const childrenData = filteredVisitorsPerDay.map((item) => ({
+    date: item.date,
+    children: item.children,
+  }));
+
   return (
     <div>
       <div className="date-picker-container">
@@ -133,12 +138,12 @@ const Dashboard = () => {
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}
-          dateFormat="MM/dd/yyyy"  // Ensure the date format is clear
+          dateFormat="MM/dd/yyyy"
         />
-        <label> End Date:</label>
-        <DatePicker 
-          selected={endDate} 
-          onChange={(date) => setEndDate(date)} 
+        <label>End Date:</label>
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
           dateFormat="MM/dd/yyyy"
         />
       </div>
@@ -157,21 +162,17 @@ const Dashboard = () => {
         <div className="chart">
           <h2>Adult Visitors Sparkline</h2>
           <AdultVisitorsSparkline
-            data={filteredVisitorsPerDay.map((item) => ({
-              date: item.date,
-              adults: item.adults,
-            }))}
-            totalAdults={totalAdults}
-          />
+  data={filteredVisitorsPerDay.map((item) => ({
+    date: item.date,
+    adults: item.adults,
+  }))}
+/>
         </div>
 
         <div className="chart">
           <h2>Children Visitors Sparkline</h2>
           <ChildrenVisitorsSparkline
-            data={filteredVisitorsPerDay.map((item) => ({
-              date: item.date,
-              children: item.children,
-            }))}
+            data={childrenData}
             totalChildren={totalChildren}
           />
         </div>
